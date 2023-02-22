@@ -6,7 +6,6 @@ import { CardActionArea } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import GoogleButton from "react-google-button";
 import styled from "styled-components";
-import Avatar from "@mui/material/Avatar";
 import common from "../statics/common.png";
 
 import { signInWithGoogle } from ".././firebase";

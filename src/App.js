@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import GoogleButton from "react-google-button";
 import logo from "./logo.svg";
 import "./App.css";
-import { auth, signInWithGoogle, logout } from "./firebase";
+import { auth } from "./firebase";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 
@@ -30,7 +29,7 @@ function App() {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="App">

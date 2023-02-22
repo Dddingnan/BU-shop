@@ -16,7 +16,7 @@ const app = initializeApp(FIREBASE_INIT_PARAMS);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-const signInWithGoogle = async () => {
+const signInWithGoogle = async (navigate) => {
   try {
     await signInWithRedirect(auth, googleProvider);
   } catch (err) {

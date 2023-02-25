@@ -32,7 +32,7 @@ const Dividers = styled(Divider)`
 export default function MultiActionAreaCard() {
   return (
     <Wraper>
-      <Card sx={{ maxWidth: 350 }}>
+      <Card sx={{ width: 430, height: 300 }}>
         <CardActionArea>
           <CardContent>
             <Center>

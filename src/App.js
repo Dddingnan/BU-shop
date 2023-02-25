@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import logo from "./logo.svg";
 import "./App.css";
 import { auth } from "./firebase";
 import Login from "./components/Login";
@@ -34,19 +33,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route exact path="/" element={<Dashboard />} />
+        <Route exact path="/" element={<Dashboard {...user} />} />
         <Route exact path="/login" element={<Login />} />
-        {/* <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <GoogleButton onClick={() => signInWithGoogle()} />
-            <button onClick={() => logout()}>Log Out</button>
-            <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-              Learn React
-            </a>
-          </header> */}
       </Routes>
     </div>
   );

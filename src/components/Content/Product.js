@@ -7,6 +7,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Dialog from "@mui/material/Dialog";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import Typography from "@mui/material/Typography";
 
 import { useFetchData } from "../../api";
 
@@ -81,13 +82,16 @@ function Product(props) {
 
   return (
     <>
+      <Typography variant="h5" gutterBottom style={{ color: "white" }}>
+        Product
+      </Typography>
       <Dialog onClose={handleClose} open={open}>
         <Alert severity="success">
           <AlertTitle>Success</AlertTitle>
           Success add to cart — <strong>check it out!</strong>
         </Alert>
       </Dialog>
-      <ImageList sx={{ width: "100%", height: "calc(100% - 30px);" }}>
+      <ImageList sx={{ width: "100%", height: "calc(100% - 60px)" }}>
         {itemData.map((item) => (
           <ImageListItem key={item.img}>
             <img src={`${item.img}?w=248&fit=crop&auto=format`} srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`} alt={item.title} loading="lazy" />

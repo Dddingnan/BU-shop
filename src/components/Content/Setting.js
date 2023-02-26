@@ -43,7 +43,19 @@ function Setting(props) {
                   Order ID: {val}
                 </DetailHeader>
                 <div style={{ flex: 1, display: "flex", justifyContent: "end", alignItems: "center", marginRight: 10 }}>
-                  <Button variant="outlined" color="error" disableRipple>
+                  {/* 
+                  green 21b6ae 
+                  red E14949
+                  grey 7D7272
+                  blue 3C86C6
+                  orange C6633C
+                  
+                  // 0 In Process  blue
+                  // 1 In Transit  orange
+                  // 2 Completed   green
+                  // 3 Canceled    grey
+                  */}
+                  <Button variant="contained" disableRipple style={{ backgroundColor: "#C6633C" }}>
                     Status: In process
                   </Button>
                 </div>

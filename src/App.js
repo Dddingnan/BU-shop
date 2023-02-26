@@ -8,9 +8,10 @@ import Dashboard from "./components/Dashboard";
 function onAuthStateChange(callback, navigate) {
   return auth.onAuthStateChanged((user) => {
     if (user) {
-      console.log("------", user.displayName, user.email);
+      // photoUrl: ,
+      console.log("------", user);
       console.log("The user is logged in");
-      callback({ userName: user.displayName, loggedIn: true });
+      callback({ userName: user.displayName, photoUrl: user.photoURL, loggedIn: true });
       navigate("/");
     } else {
       console.log("The user is not logged in");
@@ -22,7 +23,7 @@ function onAuthStateChange(callback, navigate) {
 
 function App() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ userName: "", loggedIn: false });
+  const [user, setUser] = useState({ userName: "", photoUrl: "", loggedIn: false });
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser, navigate);
     return () => {

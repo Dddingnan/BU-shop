@@ -3,15 +3,15 @@ import axios from "axios";
 
 import config from "../config";
 
-const useFetchData = () => {
-  const [data, setData] = useState({});
+const useFetchData = (url) => {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: response } = await axios.get(config.apiBasePath + "/api/test");
+        const { data: response } = await axios.get(config.apiBasePath + url);
         setData(response);
       } catch (error) {
         setError(error);

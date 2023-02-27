@@ -13,7 +13,7 @@ function onAuthStateChange(callback, navigate) {
     if (user) {
       const { uid, displayName, email, photoURL } = user;
       try {
-        const { data: response } = await axios.get(config.apiBasePath + "/api/user/" + uid);
+        const { data: response } = await axios.get(config.apiBasePath + "/user/" + uid);
         if (Object.keys(response).length === 0) {
           // Create User if user not exists.
           const requestData = {
@@ -24,7 +24,7 @@ function onAuthStateChange(callback, navigate) {
             status: 1,
             isAdmin: 0,
           };
-          await axios.post(config.apiBasePath + "/api/user", requestData);
+          await axios.post(config.apiBasePath + "/user", requestData);
         }
         callback({ userName: displayName, photoUrl: photoURL, email, loggedIn: true });
         navigate("/");

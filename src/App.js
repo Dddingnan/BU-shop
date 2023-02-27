@@ -26,14 +26,14 @@ function onAuthStateChange(callback, navigate) {
           };
           await axios.post(config.apiBasePath + "/user", requestData);
         }
-        callback({ userName: displayName, photoUrl: photoURL, email, loggedIn: true });
+        callback({ uid, userName: displayName, photoUrl: photoURL, email, loggedIn: true });
         navigate("/");
       } catch (error) {
-        callback({ userName: "", loggedIn: false });
+        callback({ uid: "", userName: "", loggedIn: false });
         navigate("/login");
       }
     } else {
-      callback({ userName: "", loggedIn: false });
+      callback({ uid: "", userName: "", loggedIn: false });
       navigate("/login");
     }
   });
@@ -41,7 +41,7 @@ function onAuthStateChange(callback, navigate) {
 
 function App() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ userName: "", photoUrl: "", loggedIn: false });
+  const [user, setUser] = useState({ uid: "", userName: "", photoUrl: "", loggedIn: false });
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser, navigate);
     return () => {

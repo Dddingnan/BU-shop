@@ -40,7 +40,6 @@ function Dashboard(user) {
         showLabels
         value={tab}
         onChange={(event, newValue) => {
-          console.log("onChange----", newValue);
           setTab(newValue);
         }}
       >

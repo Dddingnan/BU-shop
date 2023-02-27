@@ -3,7 +3,7 @@ import axios from "axios";
 
 import config from "../config";
 
-const useFetchData = (url) => {
+const useGetData = (url) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -20,7 +20,7 @@ const useFetchData = (url) => {
     };
 
     fetchData();
-  }, []);
+  }, [url]);
 
   return {
     data,
@@ -29,4 +29,4 @@ const useFetchData = (url) => {
   };
 };
 
-export { useFetchData };
+export { useGetData };

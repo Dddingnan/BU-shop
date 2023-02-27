@@ -9,23 +9,42 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
+import axios from "axios";
 
-import { useFetchData } from "../../api";
+import config from "../../config";
+import { useGetData } from "../../api";
 
 function Product(props) {
-  const { userName } = props;
-  const { data, loading } = useFetchData("/products");
-  const [open, setOpen] = React.useState(false);
+  const { uid } = props;
+  const { data, loading } = useGetData("/products");
+  const [modal, setModal] = React.useState({ status: "info", open: false, message: "" });
 
-  console.log("dddd", props);
-
-  const handleClickOpen = (item) => {
-    setOpen(true);
-    setTimeout(() => setOpen(false), 1000);
+  const handleClickOpen = async (item) => {
+    const { productID } = item;
+    try {
+      await axios.post(config.apiBasePath + "/cart/" + uid, {
+        productID,
+        stock: 1,
+      });
+      setModal({
+        status: "success",
+        open: true,
+      });
+    } catch (error) {
+      setModal({
+        status: "error",
+        message: error.message,
+        open: true,
+      });
+    }
+    setTimeout(() => handleClose(), 1200);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setModal({
+      status: "info",
+      open: false,
+    });
   };
 
   return (
@@ -34,10 +53,18 @@ function Product(props) {
         Product
       </Typography>
       {loading && <LinearProgress />}
-      <Dialog onClose={handleClose} open={open}>
-        <Alert severity="success">
-          <AlertTitle>Success</AlertTitle>
-          Success add to cart — <strong>check it out!</strong>
+      <Dialog onClose={handleClose} open={modal.open}>
+        <Alert severity={modal.status}>
+          <AlertTitle>{modal.status}</AlertTitle>
+          {modal.status === "success" ? (
+            <>
+              {modal.status} to add cart — <strong>check it out!</strong>
+            </>
+          ) : (
+            <>
+              {modal.message} — <strong>check it again!</strong>
+            </>
+          )}
         </Alert>
       </Dialog>
       <ImageList sx={{ width: "100%", height: "calc(100% - 60px)" }}>
@@ -53,7 +80,13 @@ function Product(props) {
               subtitle={<span style={{ color: "white" }}>{item.description}</span>}
               position="below"
               actionIcon={
-                <Button variant="contained" endIcon={<ShoppingCartIcon />} onClick={() => handleClickOpen(item)} style={{ marginTop: 8, marginRight: 8 }}>
+                <Button
+                  variant="contained"
+                  endIcon={<ShoppingCartIcon />}
+                  onClick={() => handleClickOpen(item)}
+                  style={{ marginTop: 8, marginRight: 8 }}
+                  // disabled={!item.stock}
+                >
                   Add
                 </Button>
               }

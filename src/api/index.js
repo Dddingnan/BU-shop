@@ -1,8 +1,7 @@
-// use-fetch-data.js
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const baseUrl = "http://localhost:8080";
+import config from "../config";
 
 const useFetchData = () => {
   const [data, setData] = useState({});
@@ -12,7 +11,7 @@ const useFetchData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: response } = await axios.get(baseUrl + "/api/test");
+        const { data: response } = await axios.get(config.apiBasePath + "/api/test");
         setData(response);
       } catch (error) {
         setError(error);

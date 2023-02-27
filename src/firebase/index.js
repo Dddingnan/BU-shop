@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import { initializeApp } from "firebase/app";
+
 import { GoogleAuthProvider, getAuth, signOut, signInWithRedirect } from "firebase/auth";
 
 const FIREBASE_INIT_PARAMS = {
@@ -15,7 +16,7 @@ const app = initializeApp(FIREBASE_INIT_PARAMS);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-const signInWithGoogle = async (navigate) => {
+const signInWithGoogle = async () => {
   try {
     await signInWithRedirect(auth, googleProvider);
   } catch (err) {

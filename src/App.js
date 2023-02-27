@@ -1,20 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import "./App.css";
+import config from "./config";
 import { auth } from "./firebase";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 
 function onAuthStateChange(callback, navigate) {
-  return auth.onAuthStateChanged((user) => {
+  return auth.onAuthStateChanged(async (user) => {
     if (user) {
-      // photoUrl: ,
-      console.log("------", user);
-      console.log("The user is logged in");
-      callback({ userName: user.displayName, photoUrl: user.photoURL, loggedIn: true });
-      navigate("/");
+      const { uid, displayName, email, photoURL } = user;
+      try {
+        const { data: response } = await axios.get(config.apiBasePath + "/api/user/" + uid);
+        if (Object.keys(response).length === 0) {
+          // Create User if user not exists.
+          const requestData = {
+            userID: uid,
+            name: displayName,
+            email,
+            photoUrl: photoURL,
+          };
+          await axios.post(config.apiBasePath + "/api/user", requestData);
+        }
+        callback({ userName: displayName, photoUrl: photoURL, email, loggedIn: true });
+        navigate("/");
+      } catch (error) {
+        callback({ userName: "", loggedIn: false });
+        navigate("/login");
+      }
     } else {
-      console.log("The user is not logged in");
       callback({ userName: "", loggedIn: false });
       navigate("/login");
     }

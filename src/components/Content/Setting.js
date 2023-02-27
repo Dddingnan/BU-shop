@@ -5,6 +5,9 @@ import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
+import LogoutIcon from "@mui/icons-material/Logout";
+
+import { logout } from "../../firebase";
 
 const DetailHeader = styled(Typography)`
   padding: 0px 0px 0px 10px;
@@ -24,12 +27,21 @@ function Setting(props) {
         Settings
       </Typography>
       <div style={{ width: "100%", height: "calc(100% - 56px)", overflow: "auto" }}>
-        <div style={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
-          <Avatar alt={userName} src={photoUrl} style={{ width: 56, height: 56 }} />
-          <Typography style={{ color: "white", marginLeft: 10 }} variant="h6">
-            {userName}
-          </Typography>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div style={{ display: "flex", justifyContent: "start", alignItems: "center", flex: 1 }}>
+            <Avatar alt={userName} src={photoUrl} style={{ width: 56, height: 56 }} />
+            <Typography style={{ color: "white", marginLeft: 10 }} variant="h6">
+              {userName}
+            </Typography>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "end", alignItems: "center", flex: 1, marginRight: 10 }}>
+            <Button variant="contained" endIcon={<LogoutIcon />} style={{ backgroundColor: "#E14949" }} onClick={() => logout()}>
+              Log Out
+            </Button>
+          </div>
         </div>
+
         <Divider light style={{ borderTop: "1px solid white", margin: "15px 0px" }} />
         <Typography variant="h5" gutterBottom style={{ color: "white" }}>
           Order History
@@ -39,7 +51,7 @@ function Setting(props) {
           {[1, 3, 4, 5, 7, 8, 11, 22, 33, 44, 55, 66, 77, 88].map((val) => (
             <div style={{ width: "100%", height: "100%", backgroundColor: "white", borderRadius: 5 }}>
               <div style={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-                <DetailHeader variant="button" display="block" gutterTop style={{ flex: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
+                <DetailHeader variant="button" display="block" style={{ flex: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
                   Order ID: {val}
                 </DetailHeader>
                 <div style={{ flex: 1, display: "flex", justifyContent: "end", alignItems: "center", marginRight: 10 }}>
@@ -61,12 +73,12 @@ function Setting(props) {
                 </div>
               </div>
               <Divider light={false} style={{ borderTop: "1px solid white", margin: "15px 0px" }} />
-              <DetailHeader variant="button" display="block" gutterTop>
+              <DetailHeader variant="button" display="block">
                 Order Detail:
               </DetailHeader>
               {["Bike", "Steak", "Tomato"].map((val) => (
                 <div style={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
-                  <DetailContent variant="overline" display="block" gutterTop style={{ flex: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
+                  <DetailContent variant="overline" display="block" style={{ flex: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
                     {val}
                   </DetailContent>
                   <div style={{ flex: 1, display: "flex", justifyContent: "end", alignItems: "center", marginRight: 10 }}>x 1</div>
@@ -75,11 +87,11 @@ function Setting(props) {
               <Divider light={false} style={{ borderTop: "1px solid white", margin: "15px 0px" }} />
               {/* Total */}
               <div style={{ display: "flex", flexDirection: "row", margin: "10px 0px" }}>
-                <DetailHeader variant="button" display="block" gutterTop style={{ flex: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
+                <DetailHeader variant="button" display="block" style={{ flex: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
                   Total:
                 </DetailHeader>
                 <div style={{ flex: 1, display: "flex", justifyContent: "end", alignItems: "center", marginRight: 10 }}>
-                  <DetailHeader variant="button" display="block" gutterTop style={{ fontSize: 18 }}>
+                  <DetailHeader variant="button" display="block" style={{ fontSize: 18 }}>
                     $ 500
                   </DetailHeader>
                 </div>

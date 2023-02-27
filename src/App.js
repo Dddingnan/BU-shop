@@ -21,6 +21,8 @@ function onAuthStateChange(callback, navigate) {
             name: displayName,
             email,
             photoUrl: photoURL,
+            status: 1,
+            isAdmin: 0,
           };
           await axios.post(config.apiBasePath + "/api/user", requestData);
         }

@@ -33,11 +33,10 @@ function Product(props) {
     } catch (error) {
       setModal({
         status: "error",
-        message: error.message,
+        message: error.response.data?.message,
         open: true,
       });
     }
-    setTimeout(() => handleClose(), 1200);
   };
 
   const handleClose = () => {
@@ -58,7 +57,7 @@ function Product(props) {
           <AlertTitle>{modal.status}</AlertTitle>
           {modal.status === "success" ? (
             <>
-              {modal.status} to add cart — <strong>check it out!</strong>
+              {modal.status} add to cart — <strong>check it out!</strong>
             </>
           ) : (
             <>
@@ -80,13 +79,7 @@ function Product(props) {
               subtitle={<span style={{ color: "white" }}>{item.description}</span>}
               position="below"
               actionIcon={
-                <Button
-                  variant="contained"
-                  endIcon={<ShoppingCartIcon />}
-                  onClick={() => handleClickOpen(item)}
-                  style={{ marginTop: 8, marginRight: 8 }}
-                  // disabled={!item.stock}
-                >
+                <Button variant="contained" endIcon={<ShoppingCartIcon />} onClick={() => handleClickOpen(item)} style={{ marginTop: 8, marginRight: 8 }} disabled={!item.stock}>
                   Add
                 </Button>
               }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -7,14 +7,74 @@ import { CardActionArea } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import SendIcon from "@mui/icons-material/Send";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import axios from "axios";
 
-import { useGetData } from "../../api";
+import config from "../../config";
 
 function Cart(props) {
   const { uid } = props;
-  const { data, loading } = useGetData("/carts/" + uid);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState({ status: "info", open: false, message: "" });
 
-  const handleSubmit = () => {};
+  const fetchData = useCallback(async () => {
+    try {
+      const { data: response } = await axios.get(config.apiBasePath + "/carts/" + uid);
+      setData(response);
+    } catch (error) {
+      setModal({
+        status: "error",
+        message: error.message,
+        open: true,
+      });
+    }
+    setLoading(false);
+  }, [uid]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleSubmit = async () => {
+    try {
+      for (let index = 0; index < data.length; index++) {
+        const element = data[index];
+        // Check and update product stock first.
+        await axios.put(config.apiBasePath + "/product/stock/" + uid, {
+          productID: element.productID,
+          stock: element.total,
+        });
+      }
+      // Insert Order and order detail
+      await axios.post(config.apiBasePath + "/order/" + uid, {
+        orderDetail: data.map((val) => ({ productID: val.productID, stock: val.total })),
+      });
+      // Delete carts.
+      await axios.delete(config.apiBasePath + "/cart/" + uid);
+      // Re-fetch cart.
+      await fetchData();
+      setModal({
+        status: "success",
+        open: true,
+      });
+    } catch (error) {
+      setModal({
+        status: "error",
+        message: error.response.data?.message,
+        open: true,
+      });
+    }
+  };
+
+  const handleClose = () => {
+    setModal({
+      status: "info",
+      open: false,
+    });
+  };
 
   return (
     <>
@@ -22,6 +82,20 @@ function Cart(props) {
         Shopping Cart
       </Typography>
       {loading && <LinearProgress />}
+      <Dialog onClose={handleClose} open={modal.open}>
+        <Alert severity={modal.status}>
+          <AlertTitle>{modal.status}</AlertTitle>
+          {modal.status === "success" ? (
+            <>
+              {modal.status} add to order — <strong>check it out!</strong>
+            </>
+          ) : (
+            <>
+              {modal.message} — <strong>check it again!</strong>
+            </>
+          )}
+        </Alert>
+      </Dialog>
       <div style={{ width: "100%", height: "calc(100% - 100px)", overflow: "auto" }}>
         {data.map((val) => (
           <Card sx={{ width: "99%", margin: "10px 0px" }} key={val.productID}>
@@ -43,7 +117,7 @@ function Cart(props) {
                     {val.description}
                   </Typography>
                   <div style={{ flex: 1, display: "flex", justifyContent: "end", alignItems: "center", marginRight: 10 }}>
-                    <Typography variant="body2">x {val.sum}</Typography>
+                    <Typography variant="body2">x {val.total}</Typography>
                   </div>
                 </div>
               </CardContent>
@@ -59,6 +133,7 @@ function Cart(props) {
           width: "100%",
           margin: "10px 0px",
         }}
+        disabled={!data.length}
       >
         Order
       </Button>

@@ -42,7 +42,7 @@ function Cart(props) {
     try {
       for (let index = 0; index < data.length; index++) {
         const element = data[index];
-        // Check and update product stock first.
+        // Check product status and product stock first.
         await axios.put(config.apiBasePath + "/product/stock/" + uid, {
           productID: element.productID,
           stock: element.total,
@@ -104,7 +104,7 @@ function Cart(props) {
               <CardContent>
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <Typography gutterBottom variant="h5" component="div" style={{ flex: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
-                    {val.name}
+                    {val.name} - ID - {val.productID}
                   </Typography>
                   <div style={{ flex: 1, display: "flex", justifyContent: "end", alignItems: "center", marginRight: 10 }}>
                     <Typography variant="h5" component="div">

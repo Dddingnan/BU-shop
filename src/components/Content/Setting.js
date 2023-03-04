@@ -99,7 +99,9 @@ function Setting(props) {
                   <DetailContent variant="overline" display="block" style={{ flex: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
                     {val.name}
                   </DetailContent>
-                  <div style={{ flex: 1, display: "flex", justifyContent: "end", alignItems: "center", marginRight: 10 }}>x {val.stock}</div>
+                  <div style={{ flex: 1, display: "flex", justifyContent: "end", alignItems: "center", marginRight: 10 }}>
+                    x {val.stock} - $ {val.price}
+                  </div>
                 </div>
               ))}
               <Divider light={false} style={{ borderTop: "1px solid white", margin: "15px 0px" }} />
